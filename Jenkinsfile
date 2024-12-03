@@ -1,4 +1,21 @@
-FROM openjdk:17
-ADD target/springboot-eks.jar springboot-eks.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","springboot-eks.jar"]
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/kjayasri494/git-tutorials.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+    }
+}
